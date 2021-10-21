@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Entry = ({ entry, mood, onEditButtonClick, onDeleteButtonClick }) => {
+export const Entry = ({ entry, mood, tags, onEditButtonClick, onDeleteButtonClick }) => {
   const getMessageType = () => {
     if (mood) {
       switch (mood.label) {
@@ -18,6 +18,7 @@ export const Entry = ({ entry, mood, onEditButtonClick, onDeleteButtonClick }) =
     }
   }
 
+
   return (
     <article className={`message ${getMessageType()}`} style={{width:"100%"}}>
       <div className="message-body">
@@ -25,7 +26,14 @@ export const Entry = ({ entry, mood, onEditButtonClick, onDeleteButtonClick }) =
         <p className="entry__entry">{entry.entry}</p>
         <p className="entry__date">{entry.date}</p>
         <p className="entry__mood">{mood?.label}</p>
-        <div className="buttons">
+        {
+          entry.tags ?
+          entry.tags.map(tag => {
+            return <li className='entry__tag'>{tag.name}</li>
+          })
+          : ""
+        }
+        <div>
           <button className={`button ${getMessageType()} is-outlined`} onClick={
             () => {
               onEditButtonClick(entry.id)

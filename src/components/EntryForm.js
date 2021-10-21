@@ -40,10 +40,12 @@ export const EntryForm = ({ entry, moods, onFormSubmit, tags }) => {
         const tagId = event.target.value
 
         const copy = {...updatedEntry}
+        debugger
         if(copy.tags && copy.tags.indexOf(tagId) === -1) {
             copy.tags.push(tagId)
         } else if(copy.tags) {
-            copy.tags.pop(tagId) 
+            const index = copy.tags.indexOf(tagId)
+            copy.tags.splice(index, 1) 
         } else {
             copy.tags = [tagId]
         }
@@ -51,8 +53,9 @@ export const EntryForm = ({ entry, moods, onFormSubmit, tags }) => {
     }
 
     useEffect(() => {
-        
-    }, [])
+        console.log("updatedEntry:" ,updatedEntry)
+    }, [updatedEntry])
+
     return (
         <article className="panel is-info">
             <h2 className="panel-heading">{editMode ? "Update Entry" : "Create Entry"}</h2>
@@ -101,14 +104,19 @@ export const EntryForm = ({ entry, moods, onFormSubmit, tags }) => {
                     </div>
                     <div className='field'>
                     <label htmlFor="tags" className="label">Tags: </label>
-                    {
+                    {!updatedEntry === {} ?
                         tags.map(tag => (
+                        <>
+                        <input type="checkbox" checked={updatedEntry.tags.includes(tag.id) ? true :  false} key={tag.id} value={tag.id}
+                        onChange={handleCheckBox}/>{tag.name}
+                        </>))
+                        : tags.map(tag => (
                         <>
                         <input type="checkbox" key={tag.id} value={tag.id}
                         onChange={handleCheckBox}/>{tag.name}
-                        </>
-                        ))
+                        </>))
                     }
+                    
                     </div>
                     <div className="field">
                         <div className="control">

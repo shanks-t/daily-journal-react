@@ -53,6 +53,7 @@ export const DailyJournal = () => {
           <EntryList
             entries={entries}
             moods={moods}
+            tags={tags}
             onEditButtonClick={onEditButtonClick}
             onDeleteButtonClick={onDeleteButtonClick}
           />
