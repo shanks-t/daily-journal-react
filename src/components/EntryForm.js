@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
+import { getTags } from "./mood/MoodManager"
 
-export const EntryForm = ({ entry, moods, onFormSubmit }) => {
+export const EntryForm = ({ entry, moods, onFormSubmit, tags }) => {
     const [editMode, setEditMode] = useState(false)
     const [updatedEntry, setUpdatedEntry] = useState(entry)
 
@@ -35,6 +36,23 @@ export const EntryForm = ({ entry, moods, onFormSubmit }) => {
         onFormSubmit(copyEntry)
     }
 
+    const handleCheckBox = (event) => {
+        const tagId = event.target.value
+
+        const copy = {...updatedEntry}
+        if(copy.tags && copy.tags.indexOf(tagId) === -1) {
+            copy.tags.push(tagId)
+        } else if(copy.tags) {
+            copy.tags.pop(tagId) 
+        } else {
+            copy.tags = [tagId]
+        }
+        setUpdatedEntry(copy)
+    }
+
+    useEffect(() => {
+        
+    }, [])
     return (
         <article className="panel is-info">
             <h2 className="panel-heading">{editMode ? "Update Entry" : "Create Entry"}</h2>
@@ -80,6 +98,17 @@ export const EntryForm = ({ entry, moods, onFormSubmit }) => {
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div className='field'>
+                    <label htmlFor="tags" className="label">Tags: </label>
+                    {
+                        tags.map(tag => (
+                        <>
+                        <input type="checkbox" key={tag.id} value={tag.id}
+                        onChange={handleCheckBox}/>{tag.name}
+                        </>
+                        ))
+                    }
                     </div>
                     <div className="field">
                         <div className="control">
